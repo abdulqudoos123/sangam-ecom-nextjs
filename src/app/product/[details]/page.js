@@ -6,7 +6,7 @@ export default async function ProductDetails({ params }) {
     const productDetailsData = await ProductById(params.details)
 
 
-    console.log('product details data===', productDetailsData);
+    // console.log('product details data===', productDetailsData);
 
     return (
         <div>

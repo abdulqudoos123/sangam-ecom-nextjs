@@ -10,7 +10,7 @@ import Notification from "../Notification"
 
 
 const CommonDetails = ({ item }) => {
-    console.log('item====', item)
+    // console.log('item====', item)
     const { user, setComponentLevelLoader, componentLevelLoader ,setShowCartModal} = useContext(GlobalContext)
     const router = useRouter()
     const handleAddToCart = async (getItem) => {
