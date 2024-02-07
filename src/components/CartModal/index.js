@@ -13,13 +13,30 @@ const CartModal = () => {
     async function allCartItemsData() {
         const res = await allCartItems(user?._id)
         // console.log('allcartitems====', res)
-        console.log('resdata====', res.data)
+        // console.log('resdata====', res.data)
         if (res.success) {
-            setCartItems(res.data);
-            localStorage.setItem('cartItems', JSON.stringify(res.data))
+          const updatedData =  res.data && res.data.length
+            ? res.data.map((item) => ({
+                ...item,
+                productId: {
+                  ...item.productId,
+                  price:
+                    item.productId.onSale === "yes"
+                      ? parseInt(
+                          (
+                            item.productId.price -
+                            item.productId.price * (item.productId.priceDrop / 100)
+                          ).toFixed(2)
+                        )
+                      : item.productId.price,
+                },
+              }))
+            : [];
+            setCartItems(updatedData);
+            localStorage.setItem('cartItems', JSON.stringify(updatedData))
         }
     }
-console.log('usersss===',user)
+// console.log('usersss===',user)
     useEffect(() => {
         if (user !== null) allCartItemsData();
 

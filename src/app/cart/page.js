@@ -14,7 +14,24 @@ const Cart = () => {
             const res = await allCartItems(user?._id)
             // console.log('================',res)
             if (res.success) {
-                setCartItems(res?.data);
+                const updateData =  res.data && res.data.length
+                ? res.data.map((item) => ({
+                    ...item,
+                    productId: {
+                      ...item.productId,
+                      price:
+                        item.productId.onSale === "yes"
+                          ? parseInt(
+                              (
+                                item.productId.price -
+                                item.productId.price * (item.productId.priceDrop / 100)
+                              ).toFixed(2)
+                            )
+                          : item.productId.price,
+                    },
+                  }))
+                : [];
+                setCartItems(updateData);
                 setPageLevelLoader(false)
                 localStorage.setItem('cartItems', JSON.stringify(res.data))
             }

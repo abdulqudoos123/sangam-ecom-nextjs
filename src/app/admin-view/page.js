@@ -22,6 +22,7 @@ const AdminView = () => {
   }
 
   const handleUpdateStatus = async (getItem) => {
+    console.log('getitem==',getItem)
     setComponentLevelLoader({ loading: true, id: getItem._id })
     const res = await updateOrderStatus({
       ...getItem,
@@ -41,7 +42,7 @@ const AdminView = () => {
     }
 
   }, [user])
-  console.log('f0afaopfkpoafk', allOrdersOfAllUsers)
+  // console.log('f0afaopfkpoafk', allOrdersOfAllUsers)
   if (pageLevelLoader) {
     return <div className='w-full min-h-screen flex justify-center items-center'>
       <PulseLoader

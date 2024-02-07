@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 
 const CommonCart = ({ cartItems = [] }) => {
-    const { setComponentLevelLoader, user, setCartItems, componentLevelLoader ,setShowCartModal} = useContext(GlobalContext)
+    const { setComponentLevelLoader, user, setCartItems, componentLevelLoader, setShowCartModal } = useContext(GlobalContext)
     const router = useRouter();
 
     async function allCartItemsData() {
@@ -18,8 +18,7 @@ const CommonCart = ({ cartItems = [] }) => {
         // console.log('allcartitems====', res)
         // console.log('resdata====', res.data)
         if (res.success) {
-            setCartItems(res.data);
-
+            setCartItems(res.data) 
         }
     }
     // console.log('cartitems====', cartItems)
@@ -66,7 +65,7 @@ const CommonCart = ({ cartItems = [] }) => {
                                                             </div>
                                                             <div className="mt-4 flex gap-3  items-end justify-between sm:mt-0 sm:items-start sm:justify-end">
                                                                 <p className="shrink-0 text-base w-20 sm:order-1 max-sm:ml-6 text-gray-950 sm:ml-8 sm:text-right">
-                                                                    {
+                                                                    ${
                                                                         cartItem && cartItem.productId && cartItem.productId.price
                                                                     }
                                                                 </p>
@@ -127,7 +126,7 @@ const CommonCart = ({ cartItems = [] }) => {
                                 <button type="button"
                                     disabled={cartItems && cartItems.length === 0}
                                     className="flex justify-center items-center w-full bg-black text-white tracking-wider disabled:opacity-50 uppercase"
-                                    onClick={() =>{ router.push('/checkout')}} >
+                                    onClick={() => { router.push('/checkout') }} >
                                     Checkout &rarr; </button>
                             </div>
                         </div>

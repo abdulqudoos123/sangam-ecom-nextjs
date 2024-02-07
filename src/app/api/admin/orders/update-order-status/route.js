@@ -12,7 +12,9 @@ export async function PUT(req) {
         const isAuthUser = await AuthUser(req);
         // console.log('authuser====', isAuthUser)
         if (isAuthUser.role === 'admin') {
-            const { data } = await req.json();
+           
+            const data = await req.json();
+            // console.log('data --- ', data);
             const {
                 _id,
                 shippingAddress,
@@ -49,6 +51,7 @@ export async function PUT(req) {
             })
         }
     } catch (error) {
+        console.log('error :: ', error);
         return NextResponse.json({
             success: false,
             message: "something went wrong"

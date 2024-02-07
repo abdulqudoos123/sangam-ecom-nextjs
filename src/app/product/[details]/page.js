@@ -2,7 +2,7 @@ import CommonDetails from "@/components/CommonDetails";
 import { ProductById } from "@/services/product"
 
 export default async function ProductDetails({ params }) {
-    console.log('parmassss===',params)
+    // console.log('parmassss===',params)
     const productDetailsData = await ProductById(params.details)
 
 

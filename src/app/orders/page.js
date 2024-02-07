@@ -15,7 +15,7 @@ const Orders = () => {
     try {
       setPageLevelLoader(true);
       const res = await getAllOrdersForUser(user?._id);
-      // console.log('allordersss===', res.data)
+      console.log('allordersss===', res.data)
       if (res.success) {
         setPageLevelLoader(false)
         setAllOrdersForUser(res.data)

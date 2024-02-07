@@ -24,7 +24,7 @@ const Checkout = () => {
     const stripePromise = loadStripe(publishablekey);
 
     // console.log('address===', address);
-    // console.log('cartitems======', cartItems)
+    console.log('cartitems======', cartItems)
 
     const fetchAllAddress = async () => {
         const res = await getAllAddress(user?._id)
@@ -38,44 +38,49 @@ const Checkout = () => {
         if (user !== null) fetchAllAddress();
     }, [user])
 
-    useEffect(() => {
-        async function createFinalOrder() {
-            const isStripe = JSON.parse(localStorage.getItem('stripe'));
-            // console.log('isstripfinalorder===',isStripe)
-            if (isStripe && params.get('status') === 'success' && cartItems && cartItems.length > 0) {
-                setIsOrderProcessing(true);
-                const getCheckoutFormData = JSON.parse(localStorage.getItem('checkoutFormData'));
-
-                const finalCheckoutFormData = {
-                    user: user?._id,
-                    shippingAddress: getCheckoutFormData.shippingAddress,
-                    orderItems: cartItems.map((item) => ({
-                        qty: 1,
-                        product: item.productId,
-                    })),
-                    paymentMethod: 'stripe',
-                    totalPrice: cartItems.reduce((total, item) => (item.productId.price + total, 0)),
-                    isPaid: true,
-                    isProcessing: true,
-                    paidAt: new Date()
-                }
-                const res = await createNewOrder(finalCheckoutFormData);
-                // console.log('new order====', res)
-                if (res.success) {
-                    setIsOrderProcessing(false);
-                    setOrderSuccess(true)
-                    toast.success(res.message, {
-                        position: 'top-right '
-                    })
-                } else {
-                    setIsOrderProcessing(false);
-                    setOrderSuccess(false);
-                    toast.error(res.message, {
-                        position: 'top-right'
-                    })
-                }
-            }
+const  createFinalOrder= async function createFinalOrder() {
+    const isStripe = JSON.parse(localStorage.getItem('stripe'));
+    // console.log('isstripfinalorder===',isStripe)
+    if (isStripe && params.get('status') === 'success' && cartItems && cartItems.length > 0) {
+        setIsOrderProcessing(true);
+        const getCheckoutFormData = JSON.parse(localStorage.getItem('checkoutFormData'));
+        var array = [36, 25, 6, 15];
+        console.log('price total => ', cartItems.reduce((total, item) => (item.productId.price + total, 0)));
+        const finalCheckoutFormData = {
+            user: user?._id,
+            shippingAddress: getCheckoutFormData.shippingAddress,
+            orderItems: cartItems.map((item) => ({
+                qty: 1,
+                product: item.productId,
+            })),
+            paymentMethod: 'stripe',
+            totalPrice: cartItems.reduce((total, item) => parseInt(item.productId.price) + total, 0),
+            isPaid: true,
+            isProcessing: true,
+            paidAt: new Date()
         }
+        console.log('final ', finalCheckoutFormData);
+        const res = await createNewOrder(finalCheckoutFormData);
+        console.log('new order====', res)
+        if (res.success) {
+            setIsOrderProcessing(false);
+            setOrderSuccess(true)
+            toast.success(res.message, {
+                position: 'top-right '
+            })
+        } else {
+            setIsOrderProcessing(false);
+            setOrderSuccess(false);
+            toast.error(res.message, {
+                position: 'top-right'
+            })
+        }
+    }
+}
+  
+
+    useEffect(() => {
+       
         createFinalOrder();
     }, [params.get('status'), cartItems])
 
@@ -118,6 +123,7 @@ const Checkout = () => {
             quantity: 1
         }))
         const res = await callStripeSession(createLineItems);
+        console.log('checkout===',res)
         setIsOrderProcessing(true);
         localStorage.setItem('stripe', true);
         localStorage.setItem('checkoutFormData', JSON.stringify(checkoutFormData))
@@ -127,12 +133,14 @@ const Checkout = () => {
         console.log(error);
     }
 
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         // setOrderSuccess(false);
-    //         router.push('/orders')
-    //     },6000)
-    // }, [orderSuccess])
+    useEffect(() => {
+     if (orderSuccess) {
+        setTimeout(() => {
+            setOrderSuccess(false);
+            router.push('/orders')
+        },6000)
+     }
+    }, [orderSuccess])
 
 
     if (orderSuccess) {
@@ -182,7 +190,7 @@ const Checkout = () => {
                                             {cartItem && cartItem.productId && cartItem.productId.name}
                                         </span>
                                         <span className='font-bold'>
-                                            {cartItem && cartItem.productId && cartItem.productId.price}
+                                            $ {cartItem && cartItem.productId && cartItem.productId.price}
                                         </span>
                                     </div>
                                 </div>

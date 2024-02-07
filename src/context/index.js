@@ -27,6 +27,7 @@ const protectedRoutes = [
     'account',
     'orders',
     'admin-view',
+  
 ]
 export const GlobalState = ({ children }) => {
     const [showNavModal, setShowNavModal] = useState(false)
@@ -49,6 +50,7 @@ export const GlobalState = ({ children }) => {
     const [allOrdersForUser, setAllOrdersForUser] = useState([])
     const [orderDetails, setOrderDetails] = useState(null)
     const [allOrdersOfAllUsers, setAllOrdersOfAllUsers] = useState([])
+    
     const router = useRouter();
     const pathName = usePathname();
 
